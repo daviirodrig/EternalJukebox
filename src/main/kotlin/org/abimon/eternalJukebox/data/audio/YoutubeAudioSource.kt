@@ -13,6 +13,7 @@ import org.abimon.visi.io.FileDataSource
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URL
+import java.net.URLEncoder
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -88,8 +89,9 @@ object YoutubeAudioSource : IAudioSource {
 
         try {
             withContext(Dispatchers.IO) {
+                val encodedVideoName = URLEncoder.encode(videoName, "UTF-8")
                 val cmd = ArrayList(command).apply {
-                    add("ytsearch:${videoName}")
+                    add("https://music.youtube.com/search?q=${encodedVideoName}&sp=EgWKAQIIAWoKEAoQAxAEEAkQBQ%3D%3D")
                     add(tmpFile.absolutePath)
                     add(format)
                 }
