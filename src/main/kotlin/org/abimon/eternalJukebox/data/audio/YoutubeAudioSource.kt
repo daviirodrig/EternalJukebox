@@ -40,45 +40,45 @@ object YoutubeAudioSource : IAudioSource {
     val QUOTA_TIMEOUT = TimeUnit.MILLISECONDS.convert(10, TimeUnit.MINUTES)
 
     override suspend fun provide(info: JukeboxInfo, clientInfo: ClientInfo?): DataSource? {
-        if (apiKey == null)
-            return null
+        // if (apiKey == null)
+        //     return null
 
         logger.trace("[{}] Attempting to provide audio for {}", clientInfo?.userUID, info.id)
 
-        val artistTitle = getMultiContentDetailsWithKey(
-            searchYoutubeWithKey(
-                "${info.artist} - ${info.title}",
-                10
-            ).map { it.id.videoId })
-        val artistTitleLyrics = getMultiContentDetailsWithKey(
-            searchYoutubeWithKey(
-                "${info.artist} - ${info.title} lyrics",
-                10
-            ).map { it.id.videoId })
-        val both = ArrayList<YoutubeContentItem>().apply {
-            addAll(artistTitle)
-            addAll(artistTitleLyrics)
-        }.sortedWith(Comparator { o1, o2 ->
-            Math.abs(info.duration - o1.contentDetails.duration.toMillis())
-                .compareTo(Math.abs(info.duration - o2.contentDetails.duration.toMillis()))
-        })
+        // val artistTitle = getMultiContentDetailsWithKey(
+        //     searchYoutubeWithKey(
+        //         "${info.artist} - ${info.title}",
+        //         10
+        //     ).map { it.id.videoId })
+        val videoName = "${info.artist} - ${info.title}"
+        // val artistTitleLyrics = getMultiContentDetailsWithKey(
+        //     searchYoutubeWithKey(
+        //         "${info.artist} - ${info.title} lyrics",
+        //         10
+        //     ).map { it.id.videoId })
+        // val both = ArrayList<YoutubeContentItem>().apply {
+        //     addAll(artistTitle)
+        // }.sortedWith(Comparator { o1, o2 ->
+        //     Math.abs(info.duration - o1.contentDetails.duration.toMillis())
+        //         .compareTo(Math.abs(info.duration - o2.contentDetails.duration.toMillis()))
+        // })
 
-        val closest = both.firstOrNull()
-            ?: return kotlin.run {
-                logger.error(
-                    "[{}] Searches for both \"{} - {}\" and \"{} - {} lyrics\" turned up nothing",
-                    clientInfo?.userUID,
-                    info.artist,
-                    info.title,
-                    info.artist,
-                    info.title
-                )
-                null
-            }
+        // val x = both.firstOrNull()
+        //     ?: return kotlin.run {
+        //         logger.error(
+        //             "[{}] Searches for both \"{} - {}\" and \"{} - {} lyrics\" turned up nothing",
+        //             clientInfo?.userUID,
+        //             info.artist,
+        //             info.title,
+        //             info.artist,
+        //             info.title
+        //         )
+        //         null
+        //     }
 
         logger.trace(
-            "[{}] Settled on {} (https://youtu.be/{})",
-            clientInfo?.userUID, closest.snippet.title, closest.id
+            "[{}] Settled on {}",
+            clientInfo?.userUID, videoName
         )
 
         val tmpFile = File("$uuid.tmp")
@@ -88,15 +88,17 @@ object YoutubeAudioSource : IAudioSource {
 
         try {
             withContext(Dispatchers.IO) {
-                val downloadProcess = ProcessBuilder().command(ArrayList(command).apply {
-                    add("https://youtu.be/${closest.id}")
+                val cmd = ArrayList(command).apply {
+                    add("ytsearch:${videoName}")
                     add(tmpFile.absolutePath)
                     add(format)
-                }).redirectErrorStream(true).redirectOutput(tmpLog).start()
+                }
+                logger.debug(cmd.joinToString(" "))
+                val downloadProcess = ProcessBuilder().command(cmd).redirectErrorStream(true).redirectOutput(tmpLog).start()
 
                 if (!downloadProcess.waitFor(90, TimeUnit.SECONDS)) {
                     downloadProcess.destroyForcibly().waitFor()
-                    logger.error("[{}] Forcibly destroyed the download process for {}", clientInfo?.userUID, closest.id)
+                    logger.error("[{}] Forcibly destroyed the download process for {}", clientInfo?.userUID, videoName)
                 }
             }
 
