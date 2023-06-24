@@ -36,7 +36,7 @@ function createJRemixer(context, jquery) {
                             function(e) { // error function
                                 track.status = 'error: loading audio';
                                 callback(-1, track, 0);
-                                $("span#info").textContent = "Audio could not be retrieved, provide a youtube link or file on the tune settings"
+                                document.querySelector("span#info").textContent = "Audio could not be retrieved, provide a youtube link or file on the tune settings"
                                 console.log('audio error', e);
                             }
                         );
