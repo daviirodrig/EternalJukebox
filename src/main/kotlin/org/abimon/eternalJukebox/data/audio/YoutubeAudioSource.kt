@@ -18,8 +18,6 @@ import java.time.Instant
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicLong
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 import kotlin.math.abs
 
 object YoutubeAudioSource : IAudioSource {
@@ -133,8 +131,8 @@ object YoutubeAudioSource : IAudioSource {
                     }
                 }
                 if (videoId != null) {
+                    logger.debug("Storing Location from yt-dlp")
                     EternalJukebox.database.storeAudioLocation(info.id, "https://youtu.be/${videoId}", clientInfo)
-                    logger.debug("")
                 }
                 endGoalTmp.useThenDelete {
                     EternalJukebox.storage.store(
@@ -197,9 +195,9 @@ object YoutubeAudioSource : IAudioSource {
         val both = ArrayList<YoutubeContentItem>().apply {
             addAll(artistTitle)
             addAll(artistTitleLyrics)
-        }.sortedWith(Comparator { o1, o2 ->
+        }.sortedWith { o1, o2 ->
             abs(info.duration - o1.contentDetails.duration.toMillis()).compareTo(abs(info.duration - o2.contentDetails.duration.toMillis()))
-        })
+        }
 
         val closest = both.firstOrNull() ?: run {
             logger.error(
@@ -293,7 +291,6 @@ object YoutubeAudioSource : IAudioSource {
             )
         ).header("User-Agent" to "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:44.0) Gecko/20100101 Firefox/44.0")
             .responseString()
-        // 100 cost on YT api ^
 
         val (result, error) = r
 
@@ -317,7 +314,7 @@ object YoutubeAudioSource : IAudioSource {
             ?: EternalJukebox.config.audioSourceOptions["audioCommand"]) as? List<*>)?.map { "$it" }
             ?: ((EternalJukebox.config.audioSourceOptions["AUDIO_COMMAND"]
                 ?: EternalJukebox.config.audioSourceOptions["audioCommand"]) as? String)?.split("\\s+".toRegex())
-                    ?: if (System.getProperty("os.name").toLowerCase()
+                    ?: if (System.getProperty("os.name").lowercase()
                     .contains("windows")
             ) listOf("yt.bat") else listOf("sh", "yt.sh")
 
