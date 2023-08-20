@@ -12,6 +12,7 @@ services:
     volumes:
       - './envvar_config.yaml:/EternalJukebox/envvar_config.yaml'
       - './data:/EternalJukebox/data'
+      - './web:/EternalJukebox/web'
     # depends_on:
     #   - db
 

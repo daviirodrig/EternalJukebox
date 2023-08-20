@@ -194,7 +194,21 @@ function createJRemixer(context, jquery) {
             }
 
             preprocessTrack(track);
-            fetchAudio(jukeboxData.audioURL === null ? "api/audio/jukebox/" + track.info.id : ("api/audio/external?fallbackID=" + track.info.id + "&url=" + encodeURIComponent(jukeboxData.audioURL)));
+            const audioURL = jukeboxData.audioURL;
+            const trackSearch = `${track.info.artist} ${track.info.name}`;
+            let audioFetchUrl;
+
+            if (audioURL === null) {
+            // Use the jukebox API endpoint
+                audioFetchUrl = `python/audio/jukebox/${trackSearch}`;
+            } else {
+            // Use the external API endpoint with the fallback ID and URL
+                const encodedURL = encodeURIComponent(audioURL);
+                audioFetchUrl = `api/audio/external?fallbackID=${track.info.id}&url=${encodedURL}`;
+            }
+
+            fetchAudio(audioFetchUrl);
+            // fetchAudio(jukeboxData.audioURL === null ? "api/audio/jukebox/" + track.info.id : ("api/audio/external?fallbackID=" + track.info.id + "&url=" + encodeURIComponent(jukeboxData.audioURL)));
         },
 
         getPlayer : function() {
