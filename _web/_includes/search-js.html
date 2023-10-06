@@ -53,7 +53,7 @@ function listSong(r) {
     if (title) {
         item = $('<li>').append(title);
 
-        item.attr('class', 'song-link');
+        item.attr('class', 'cursor-pointer');
         item.click(function () {
             console.log(r);
             location.href = "{% if page.app == 'jukebox' %}jukebox{% elsif page.app == 'canonizer' %}canonizer{% endif %}_go.html?id=" + r.id;

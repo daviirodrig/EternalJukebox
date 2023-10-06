@@ -14,25 +14,29 @@ buttons:
      id: og-audio-source
 ---
 
-<div id='info-div'>
-    <span id='info'> </span>
-    {% include tweet.html %}
-</div>
-
 <div id='error'></div>
-<div id="hero">
+<div id="hero" class="flex bg-[#2B3E50] text-white">
     <div id="stats">
-        <div id="details">
-            <a href="" target="_blank" id="song-url"><span id="song-title"> </span></a>
-            <br>
-            <span id="button-panel">
+
+        <span id="button-panel" class="flex flex-row text-white justify-center">
+            <div class="flex flex-row bg-[rgb(64,84,104)] rounded-xl gap-8 text-xl p-1.5">
                 {% for item in layout.buttons %}
-                  <button class="btn btn-small btn-default" id="{{ item.id }}">{{ item.name }}</button>
+                <button class="btn btn-small btn-default" id="{{ item.id }}">{{ item.name }}</button>
                 {% endfor %}
-                {% if page.app == 'jukebox' %}<button class="btn btn-small btn-default" id="canonize">Auto Canonizer Version</button>{% elsif page.app == 'canonizer' %}<button class="btn btn-small btn-default" id="jukebox">Eternal Jukebox Version</button>{% endif %}
-            </span>
-        </div>
+                {% if page.app == 'jukebox' %}<button class="btn btn-small btn-default" id="canonize">Auto Canonizer
+                    Version</button>{% elsif page.app == 'canonizer' %}<button class="btn btn-small btn-default"
+                    id="jukebox">Eternal Jukebox Version</button>{% endif %}
+            </div>
+        </span>
         {{ content }}
+    </div>
+    <div id="details">
+        <a href="" target="_blank" id="song-url"><span id="song-title"> </span></a>
+        <br>
+    </div>
+    <div id='info-div'>
+        <span id='info'> </span>
+        <!-- {% include tweet.html %} -->
     </div>
 </div>
 
@@ -40,11 +44,11 @@ buttons:
 
 {% if page.app == 'jukebox' %}
 <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable"
-     style="display: none; outline: 0px none; z-index: 1000;" tabindex="-1" role="dialog" aria-labelledby="ui-id-1">
+    style="display: none; outline: 0px none; z-index: 1000;" tabindex="-1" role="dialog" aria-labelledby="ui-id-1">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"><span id="ui-id-1"
-                                                                                            class="ui-dialog-title">Fine tune your endless song</span><a
-            href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button"><span
-            class="ui-icon ui-icon-closethick"></span></a></div>
+            class="ui-dialog-title">Fine tune your endless song</span><a href="#"
+            class="ui-dialog-titlebar-close ui-corner-all" role="button"><span
+                class="ui-icon ui-icon-closethick"></span></a></div>
     <div id="controls" visibility="visible" style="display: block;" class="ui-dialog-content ui-widget-content">
         <div>
             <div id="control-instructions">
@@ -55,8 +59,8 @@ buttons:
                 <div id="sthreshold"> Branch Similarity Threshold: <span id="threshold"> 50 </span></div>
 
                 <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     id="threshold-slider"><a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
-                                              style="left: 35.8974%;"></a></div>
+                    id="threshold-slider"><a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                        style="left: 35.8974%;"></a></div>
                 <div id="slider-labels">
                     <span class="left-label"> Higher<br> Quality </span>
                     <span class="right-label"> More <br>Branches </span>
@@ -69,10 +73,11 @@ buttons:
                     <span id="max-prob">50</span>%
                 </div>
                 <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     id="probability-slider">
+                    id="probability-slider">
                     <div class="ui-slider-range ui-widget-header" style="left: 18%; width: 32%;"></div>
                     <a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 18%;"></a><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a></div>
+                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 50%;"></a>
+                </div>
                 <div id="slider-labels">
                     <span class="left-label"> Low </span>
                     <span class="right-label"> High </span>
@@ -85,8 +90,8 @@ buttons:
                     <span id="ramp-speed">9</span>%
                 </div>
                 <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     id="probability-ramp-slider"><a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
-                                                     style="left: 30%;"></a></div>
+                    id="probability-ramp-slider"><a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                        style="left: 30%;"></a></div>
                 <div id="slider-labels">
                     <span class="left-label"> Slow </span>
                     <span class="right-label"> Fast </span>
@@ -94,13 +99,13 @@ buttons:
             </div>
             <br clear="all">
             <div class="l-cb" id="l-last-branch"> Loop extension optimization: <input id="last-branch" checked="checked"
-                                                                                      type="checkbox"></div>
+                    type="checkbox"></div>
             <div class="l-cb" id="l-reverse-branch"> Allow only reverse branches : <input id="reverse-branch"
-                                                                                          type="checkbox"></div>
+                    type="checkbox"></div>
             <div class="l-cb" id="l-long-branch"> Allow only long branches : <input id="long-branch" type="checkbox">
             </div>
             <div class="l-cb" id="l-sequential-branch"> Remove sequential branches: <input id="sequential-branch"
-                                                                                           type="checkbox"></div>
+                    type="checkbox"></div>
             <div class="l-cb" id="l-disable-keys"> Disable Keypresses: <input id="disable-keys" type="checkbox"></div>
             <div class="l-cb" id="l-audio-url">Audio URL: <input id="audio-url" type="url"></div>
             <br>
@@ -110,14 +115,15 @@ buttons:
                 </form>
                 <div class='progress_outer' id="audio-progress" style="background-color: green;">
                     <div id='_progress' class='progress'></div>
-                </div></div>
+                </div>
+            </div>
             <br>
             <div id="volume-div">
                 <div id="svolume"> Volume: <span id="volume"> 50 </span></div>
 
                 <div class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     id="volume-slider"><a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
-                                              style="left: 50%;"></a></div>
+                    id="volume-slider"><a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                        style="left: 50%;"></a></div>
                 <div id="slider-labels">
                     <span class="left-label"> Quiet </span>
                     <span class="right-label"> Loud </span>
@@ -145,11 +151,11 @@ buttons:
 </div>
 {% elsif page.app == 'canonizer' %}
 <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable"
-     style="display: none; outline: 0px none; z-index: 1000;" tabindex="-1" role="dialog" aria-labelledby="ui-id-1">
+    style="display: none; outline: 0px none; z-index: 1000;" tabindex="-1" role="dialog" aria-labelledby="ui-id-1">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"><span id="ui-id-1"
-                                                                                            class="ui-dialog-title">Fine tune your endless song</span><a
-            href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button"><span
-            class="ui-icon ui-icon-closethick"></span></a></div>
+            class="ui-dialog-title">Fine tune your endless song</span><a href="#"
+            class="ui-dialog-titlebar-close ui-corner-all" role="button"><span
+                class="ui-icon ui-icon-closethick"></span></a></div>
     <div id="controls" visibility="visible" style="display: block;" class="ui-dialog-content ui-widget-content">
         <div>
             <div id="control-instructions">
@@ -157,8 +163,10 @@ buttons:
             </div>
             <div class="l-cb" id="l-audio-url">Audio URL: <input id="audio-url" type="url"></div>
             <br>
-            <div class="l-cb" id="l-audio-upload"><form id="audio-upload-form"><input id="audio-upload" type="file" name="song_upload"
-                                                                                      accept="audio/*"></form></div>
+            <div class="l-cb" id="l-audio-upload">
+                <form id="audio-upload-form"><input id="audio-upload" type="file" name="song_upload" accept="audio/*">
+                </form>
+            </div>
             <button class="btn btn-small" id="reset-edges"> Reset</button>
         </div>
     </div>
