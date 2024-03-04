@@ -6,8 +6,6 @@ buttons:
      id: go
    - name: Tune
      id: tune
-   - name: Star
-     id: star
    - name: Short URL
      id: short-url
    - name: Original Audio Source
@@ -15,30 +13,49 @@ buttons:
 ---
 
 <div id='error'></div>
-<div id="hero" class="flex bg-[#2B3E50] text-white">
-    <div id="stats">
+<main id="hero" class="bg-[#2B3E50] text-white lg:flex-col flex-grow h-full flex justify-center content-center items-center">
+    <div id="stats" class="-translate-y-10 -translate-x-48 lg:scale-50">
 
-        <span id="button-panel" class="flex flex-row text-white justify-center">
+        <div id="tiles"></div>
+        <div id="button-panel" class="flex flex-row text-white justify-center -translate-y-10 font-space-grotesk">
             <div class="flex flex-row bg-[rgb(64,84,104)] rounded-xl gap-8 text-xl p-1.5">
                 {% for item in layout.buttons %}
-                <button class="btn btn-small btn-default" id="{{ item.id }}">{{ item.name }}</button>
+                <button class="" id="{{ item.id }}">{{ item.name }}</button>
                 {% endfor %}
-                {% if page.app == 'jukebox' %}<button class="btn btn-small btn-default" id="canonize">Auto Canonizer
+                <!-- {% if page.app == 'jukebox' %}<button class="btn btn-small btn-default" id="canonize">Auto Canonizer
                     Version</button>{% elsif page.app == 'canonizer' %}<button class="btn btn-small btn-default"
-                    id="jukebox">Eternal Jukebox Version</button>{% endif %}
+                    id="jukebox">Eternal Jukebox Version</button>{% endif %} -->
             </div>
-        </span>
-        {{ content }}
     </div>
+    </div>
+    <!-- <div id="details">
+        <a href="" target="_blank" id="song-url"><span id="song-title"> </span></a>
+        <br>
+        </div>
     <div id="details">
         <a href="" target="_blank" id="song-url"><span id="song-title"> </span></a>
         <br>
+    </div> -->
+
+
+    <div id="details" class="flex flex-col -translate-x-48 w-96">
+        <a href="" target="_blank" id="song-url">
+            <div class="flex flex-col text-center">
+                <span id="song-title" class="text-2xl"> </span>
+                <span id="song-artist" class="text-xl"> </span>
+            </div>
+        </a>
+        <div class="flex flex-row justify-between border-t-2">
+            <span id="sbeats"> Total Beats: <span id="beats"> 0 </span></span>
+            <!--<span id='sbeats'> PC: <span id='playcount'> 0 </span></span> -->
+            <span id="stime"> Listen Time: <span id="time"> 00:00:00 </span></span>
+        </div>
     </div>
-    <div id='info-div'>
+    <div id='info-div' class="hidden">
         <span id='info'> </span>
         <!-- {% include tweet.html %} -->
     </div>
-</div>
+</main>
 
 {% include go-js.html %}
 

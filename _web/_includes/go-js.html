@@ -137,6 +137,11 @@
     }
 
     function createTileCircle(qtype, radius) {
+        var tileContainer = document.createElement('div');
+        tileContainer.style.position = 'relative';
+
+        // Make tiles absolute
+
         var start = now();
         var y_padding = 90;
         var x_padding = 200;
@@ -167,6 +172,7 @@
             var x = x_padding + R + R * Math.cos(angle);
             tile.move(x, y);
             tile.rotate(angle);
+            tile.style.position = 'absolute';
             tiles.push(tile);
             angle += alpha;
         }
@@ -285,7 +291,8 @@
     function trackReady(t) {
         t.fixedTitle = getTitle(t.info.title, t.info.artist, t.info.url);
         document.title = 'Eternal Jukebox for ' + t.fixedTitle;
-        $("#song-title").text(t.fixedTitle);
+        $("#song-title").text(t.info.title);
+        $("#song-artist").text(t.info.artist)
         $("#song-url").attr("href", "https://open.spotify.com/track/" + t.info.id);
         jukeboxData.minLongBranch = track.analysis.beats.length / 5;
     }
